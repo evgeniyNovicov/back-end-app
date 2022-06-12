@@ -23,7 +23,19 @@ app.get('/videos', (req : Request, res : Response) => {
 app.get('/videos/:videoId', (req : Request, res : Response) => {
   const id : Number = +req.params.videoId
   let videoElem = videos.find((v) => v.id === id)
-  res.send(videoElem)
+  if(videoElem) {
+    res.status(201).send(videoElem)
+  } else {
+    res.status(404).send({
+      errorsMessages: [
+        {
+          message: "Incorrect id",
+          field: "id"
+        }
+      ],
+      resultCode: 1
+    })
+  }
 })
 
 app.post('/videos', (req : Request, res : Response) => {
@@ -73,8 +85,6 @@ app.delete('/videos/:index', (req : Request, res: Response) => {
     res.status(204)
   }
 })
-
-
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
