@@ -26,11 +26,11 @@ app.get('/videos/:videoId', (req : Request, res : Response) => {
   if(videoElem) {
     res.status(200).send(videoElem)
   } else {
-    res.status(404).send({
+    res.status(400).send({
       errorsMessages: [
         {
           message: "Incorrect id",
-          field: "id"
+          field: "title"
         }
       ],
       resultCode: 1
@@ -76,7 +76,6 @@ app.put('/videos/:index', (req : Request, res: Response) => {
 
 app.delete('/videos/:index', (req : Request, res: Response) => {
   const ind = videos.findIndex(item => +req.params.index  === +item.id)
-
   if(ind === -1 || req.params.index === '') {
     res.status(404).send('Такого видео нет')
   } else {
