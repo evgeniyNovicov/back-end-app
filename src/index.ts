@@ -17,7 +17,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 app.get('/videos', (req : Request, res : Response) => {
-  res.send(videos)
+  res.status(200).send(videos)
 })
 
 app.get('/videos/:videoId', (req : Request, res : Response) => {
