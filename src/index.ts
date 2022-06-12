@@ -24,7 +24,7 @@ app.get('/videos/:videoId', (req : Request, res : Response) => {
   const id : Number = +req.params.videoId
   let videoElem = videos.find((v) => v.id === id)
   if(videoElem) {
-    res.status(201).send(videoElem)
+    res.status(200).send(videoElem)
   } else {
     res.status(404).send({
       errorsMessages: [
@@ -82,7 +82,7 @@ app.delete('/videos/:index', (req : Request, res: Response) => {
     res.status(404).send('Такого видео нет')
   } else {
     const newVideos = videos.splice( ind, 1)
-    res.status(204)
+    res.status(204).send()
   }
 })
 
