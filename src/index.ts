@@ -21,20 +21,31 @@ app.get('/videos', (req : Request, res : Response) => {
 })
 
 app.get('/videos/:videoId', (req : Request, res : Response) => {
-  const id : Number = +req.params.videoId
-  let videoElem = videos.find((v) => v.id === id)
-  if(videoElem) {
-    res.status(200).send(videoElem)
-  } else {
-    res.status(400).send({
+  if(req.params.videoId === '') {
+    res.status(404).send({
       errorsMessages: [
         {
           message: "Incorrect id",
           field: "title"
         }
-      ],
-      resultCode: 1
+      ]
     })
+  } else {
+    const id : Number = +req.params.videoId
+    let videoElem = videos.find((v) => v.id === id)
+    if(videoElem) {
+      res.status(200).send(videoElem)
+    } else {
+      res.status(400).send({
+        errorsMessages: [
+          {
+            message: "Incorrect id",
+            field: "title"
+          }
+        ],
+        resultCode: 1
+      })
+    }
   }
 })
 
@@ -56,31 +67,51 @@ app.post('/videos', (req : Request, res : Response) => {
 })
 
 app.put('/videos/:index', (req : Request, res: Response) => {
-  if(+req.params.index) {
+  if(req.params.index) {
     const ind = videos.findIndex(item => +req.params.index  === +item.id)
     if(ind !== -1 && typeof req.body.title === 'string') {
       videos[ind].title = req.body.title
       res.status(204).send(videos[ind])
     } else {
-      res.status(404).send({
+      res.status(400).send({
         errorsMessages: [
           {
-            message: "Incorrect id",
-            field: "id"
+            message: "Incorrect title",
+            field: "title"
           }
         ]
       })
     }
+  } else {
+    res.status(404).send({
+      errorsMessages: [
+        {
+          message: "Incorrect id",
+          field: "title"
+        }
+      ]
+    })
   }
 })
 
 app.delete('/videos/:index', (req : Request, res: Response) => {
-  const ind = videos.findIndex(item => +req.params.index  === +item.id)
-  if(ind === -1 || req.params.index === '') {
-    res.status(404).send('Такого видео нет')
+  if(req.params.index === '') {
+    res.status(404).send({
+      errorsMessages: [
+        {
+          message: "Incorrect id",
+          field: "title"
+        }
+      ]
+    })
   } else {
-    videos.splice( ind, 1)
-    res.status(204).send()
+    const ind = videos.findIndex(item => +req.params.index  === +item.id)
+    if(ind === -1 || req.params.index === '') {
+      res.status(400).send('Такого видео нет')
+    } else {
+      videos.splice( ind, 1)
+      res.status(204).send()
+    }
   }
 })
 
