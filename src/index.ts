@@ -69,20 +69,11 @@ app.post('/videos', (req : Request, res : Response) => {
 app.put('/videos/:index', (req : Request, res: Response) => {
   if(req.params.index) {
     const ind = videos.findIndex(item => +req.params.index  === +item.id)
-    if(ind !== -1 && typeof req.body.title === 'string') {
+    if(ind !== -1 && typeof req.body.title === 'string' && req.body.title.length <= 40) {
       videos[ind].title = req.body.title
       res.status(204).send(videos[ind])
-    } else if(req.body.title == null){
-      res.status(400).send({
-        errorsMessages: [
-          {
-            message: "Incorrect title",
-            field: "title"
-          }
-        ]
-      })
     } else{
-      res.status(404).send({
+      res.status(400).send({
         errorsMessages: [
           {
             message: "Incorrect title",
