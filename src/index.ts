@@ -78,10 +78,11 @@ app.put('/videos/:index', (req : Request, res: Response) => {
 
 app.delete('/videos/:index', (req : Request, res: Response) => {
   const ind = videos.findIndex(item => +req.params.index  === +item.id)
-  if(ind === -1) {
+
+  if(ind === -1 || req.params.index === '') {
     res.status(404).send('Такого видео нет')
   } else {
-    const newVideos = videos.splice( ind, 1)
+    videos.splice( ind, 1)
     res.status(204).send()
   }
 })
