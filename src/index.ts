@@ -16,10 +16,6 @@ const videos = [
 app.use(cors())
 app.use(bodyParser.json())
 
-app.get('/', (req : Request, res : Response) => {
-  res.send("videos")
-})
-
 app.get('/videos', (req : Request, res : Response) => {
   res.send(videos)
 })
