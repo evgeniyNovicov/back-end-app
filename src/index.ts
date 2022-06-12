@@ -50,8 +50,7 @@ app.post('/videos', (req : Request, res : Response) => {
           message: "Incorrect title",
           field: "title"
         }
-      ],
-      resultCode: 1
+      ]
     })
   }
 })
@@ -63,14 +62,13 @@ app.put('/videos/:index', (req : Request, res: Response) => {
       videos[ind].title = req.body.title
       res.status(204).send(videos[ind])
     } else {
-      res.status(400).send({
+      res.status(404).send({
         errorsMessages: [
           {
             message: "Incorrect id",
             field: "id"
           }
-        ],
-        resultCode: 1
+        ]
       })
     }
   }
