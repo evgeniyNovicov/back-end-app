@@ -27,24 +27,50 @@ app.get('/videos/:videoId', (req : Request, res : Response) => {
 })
 
 app.post('/videos', (req : Request, res : Response) => {
-  const video = {id: +(Date.now()), title: req.body.title, author: 'it-incubator.eu'};
-  videos.push(video)
-  res.send(videos)
+  if(typeof req.body.title === 'string' &&  req.body.title.trim() && req.body.title.length <= 40 ) {
+    const video = {id: +(Date.now()), title: req.body.title, author: 'it-incubator.eu'};
+    videos.push(video)
+    res.status(201).send(video)
+  } else {
+    res.status(400).send({
+      errorsMessages: [
+        {
+          message: "Incorrect title",
+          field: "title"
+        }
+      ],
+      resultCode: 1
+    })
+  }
 })
 
 app.put('/videos/:index', (req : Request, res: Response) => {
-  const ind = videos.findIndex(item => +req.params.index  === +item.id)
-  videos[ind].title = req.body.title
-  res.send(videos[ind])
+  if(+req.params.index) {
+    const ind = videos.findIndex(item => +req.params.index  === +item.id)
+    if(ind !== -1 && typeof req.body.title === 'string') {
+      videos[ind].title = req.body.title
+      res.status(204).send(videos[ind])
+    } else {
+      res.status(400).send({
+        errorsMessages: [
+          {
+            message: "Incorrect id",
+            field: "id"
+          }
+        ],
+        resultCode: 1
+      })
+    }
+  }
 })
 
 app.delete('/videos/:index', (req : Request, res: Response) => {
   const ind = videos.findIndex(item => +req.params.index  === +item.id)
   if(ind === -1) {
-    res.send('Такого видео нет')
+    res.status(404).send('Такого видео нет')
   } else {
     const newVideos = videos.splice( ind, 1)
-    res.send(newVideos)
+    res.status(204)
   }
 })
 
