@@ -96,7 +96,7 @@ app.put('/videos/:index', (req : Request, res: Response) => {
 
 app.delete('/videos/:index', (req : Request, res: Response) => {
   if(req.params.index === '') {
-    res.status(404).send({
+    res.status(400).send({
       errorsMessages: [
         {
           message: "Incorrect id",
