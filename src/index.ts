@@ -73,7 +73,7 @@ app.put('/videos/:index', (req : Request, res: Response) => {
       videos[ind].title = req.body.title
       res.status(204).send(videos[ind])
     } else if (req.body.title === null) {
-        res.status(404).send({
+        res.status(400).send({
           errorsMessages: [
             {
               message: "Incorrect title",
