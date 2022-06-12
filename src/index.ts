@@ -96,7 +96,7 @@ app.put('/videos/:index', (req : Request, res: Response) => {
 
 app.delete('/videos/:index', (req : Request, res: Response) => {
   if(req.params.index === '') {
-    res.status(400).send({
+    res.status(404).send({
       errorsMessages: [
         {
           message: "Incorrect id",
@@ -106,7 +106,7 @@ app.delete('/videos/:index', (req : Request, res: Response) => {
     })
   } else {
     const ind = videos.findIndex(item => +req.params.index  === +item.id)
-    if(ind === -1 || req.params.index === '') {
+    if(ind === -1 ) {
       res.status(400).send('Такого видео нет')
     } else {
       videos.splice( ind, 1)
