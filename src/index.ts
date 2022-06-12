@@ -72,7 +72,7 @@ app.put('/videos/:index', (req : Request, res: Response) => {
     if(ind !== -1 && typeof req.body.title === 'string' && req.body.title.length <= 40) {
       videos[ind].title = req.body.title
       res.status(204).send(videos[ind])
-    } else if (req.body.title === null) {
+    } else if (req.body.title === null || req.body.title.length > 40) {
         res.status(400).send({
           errorsMessages: [
             {
